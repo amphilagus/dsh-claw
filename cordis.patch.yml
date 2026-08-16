@@ -5,7 +5,7 @@
 # User overlays belong in the profile's own cordis.patch.yml, addressed by id:
 #   - id: claw-memory
 #     config:
-#       root: '~/dsh/memories'
+#       root: '~/.dsh/memories'
 - id: sandbox
   disabled: true
 - insert:

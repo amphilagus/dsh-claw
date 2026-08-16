@@ -2,7 +2,7 @@
  * Claw-memory plugin: selective turn-by-turn conversational memory for
  * claw agents. The turn listener extracts only direct user input and the
  * model's visible text output, embeds it with a local Ollama model, and
- * appends JSONL vector records under `~/dsh/memories`. The `memory_search` tool
+ * appends JSONL vector records under `$DSH_HOME/memories`. The `memory_search` tool
  * reads the same store through Ollama.
  * @module @deepseek-ai/dsh-claw/memory
  */
@@ -52,7 +52,7 @@ export const name = 'claw-memory'
 export const inject = ['agents', 'tools']
 
 export interface Config {
-  /** Memory root directory. Defaults to `~/dsh/memories`. */
+  /** Memory root directory. Defaults to `$DSH_HOME/memories` (`~/.dsh/memories`). */
   root?: string
   /** Local Ollama base URL. Defaults to `http://127.0.0.1:11434`. */
   ollamaUrl?: string

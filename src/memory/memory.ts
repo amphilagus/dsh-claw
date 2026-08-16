@@ -7,21 +7,24 @@
 
 import { randomUUID } from 'node:crypto'
 import { appendFile, mkdir, readFile } from 'node:fs/promises'
-import { homedir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { expandHomePath } from '@deepseek-ai/dsh-home-paths'
+import { expandHomePath, resolveDshHome } from '@deepseek-ai/dsh-home-paths'
 import type { ContentBlock } from '@deepseek-ai/dsh-llm'
 import type { Session, SessionEvent } from '@deepseek-ai/dsh-session'
 
-/** Default directory holding every scope's memory JSONL files. */
-export function defaultMemoryRoot(): string {
-  return join(homedir(), 'dsh', 'memories')
+/**
+ * Resolve the default memory root under the harness home.
+ * @param env - environment to read `DSH_HOME` from; defaults to `process.env`.
+ * @returns `$DSH_HOME/memories` (or `~/.dsh/memories` without the variable).
+ */
+export function defaultMemoryRoot(env: Record<string, string | undefined> = process.env): string {
+  return join(resolveDshHome(undefined, env), 'memories')
 }
 
 /**
  * Expand a configured memory root. Supports the same tilde forms as the rest
  * of DSH (`~`, `~/`, `~\`) and resolves relative paths against the cwd.
- * @param root - configured root; defaults to `~/dsh/memories`.
+ * @param root - configured root; defaults to `$DSH_HOME/memories`.
  */
 export function resolveMemoryRoot(root?: string): string {
   return resolve(expandHomePath(root ?? defaultMemoryRoot()))

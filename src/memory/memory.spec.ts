@@ -1,6 +1,6 @@
 import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { homedir, tmpdir } from 'node:os'
+import { join, resolve } from 'node:path'
 import { CallId, createAssistantMessage, createUserMessage } from '@deepseek-ai/dsh-llm'
 import { SESSION_FORMAT_VERSION, Session, SessionId } from '@deepseek-ai/dsh-session'
 import { describe, expect, it } from 'vitest'
@@ -90,12 +90,13 @@ describe('preset and scope helpers', () => {
 })
 
 describe('memory roots and files', () => {
-  it('defaults to ~/dsh/memories', () => {
-    expect(defaultMemoryRoot().endsWith(join('dsh', 'memories'))).toBe(true)
+  it('defaults to $DSH_HOME/memories', () => {
+    expect(defaultMemoryRoot({ DSH_HOME: '/custom' })).toBe(join('/custom', 'memories'))
+    expect(defaultMemoryRoot({}).endsWith(join('.dsh', 'memories'))).toBe(true)
   })
 
   it('expands tilde and encodes scopes in file names', () => {
-    expect(resolveMemoryRoot('~/dsh/memories')).toBe(defaultMemoryRoot())
+    expect(resolveMemoryRoot('~/.dsh/memories')).toBe(resolve(join(homedir(), '.dsh', 'memories')))
     expect(memoryFileFor('/root/memory', 'claw-personal')).toBe(join('/root/memory', 'memory-claw-personal.jsonl'))
     expect(memoryFileFor('/root/memory', 'a/b')).toBe(join('/root/memory', `memory-${encodeURIComponent('a/b')}.jsonl`))
   })
