@@ -1,0 +1,69 @@
+{
+  "name": "@deepseek-ai/dsh-claw",
+  "description": "Out-of-tree DSH bundle for claw-* agents: personal home directories, a widened local sandbox, and Ollama-backed conversational vector memory",
+  "version": "0.1.0-rc.5",
+  "private": true,
+  "type": "module",
+  "main": "lib/index.mjs",
+  "types": "lib/index.d.mts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.mts",
+      "default": "./lib/index.mjs"
+    },
+    "./home": {
+      "types": "./lib/home/index.d.mts",
+      "default": "./lib/home/index.mjs"
+    },
+    "./home/invariant": {
+      "types": "./lib/home/invariant.d.mts",
+      "default": "./lib/home/invariant.mjs"
+    },
+    "./sandbox": {
+      "types": "./lib/sandbox/index.d.mts",
+      "default": "./lib/sandbox/index.mjs"
+    },
+    "./memory": {
+      "types": "./lib/memory/index.d.mts",
+      "default": "./lib/memory/index.mjs"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./src/*": "./src/*",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "link-dsh": "bash scripts/link-dsh.sh"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "*",
+    "@deepseek-ai/dsh-agent": "*",
+    "@deepseek-ai/dsh-home-paths": "*",
+    "@deepseek-ai/dsh-invariants": "*",
+    "@deepseek-ai/dsh-llm": "*",
+    "@deepseek-ai/dsh-sandbox": "*",
+    "@deepseek-ai/dsh-sandbox-local": "*",
+    "@deepseek-ai/dsh-session": "*",
+    "@deepseek-ai/dsh-system-prompt": "*",
+    "@deepseek-ai/dsh-tools": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsdown": "0.22.2",
+    "typescript": "^6.0.3",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.8"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "cordis.patch.yml"
+    }
+  }
+}

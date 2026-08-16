@@ -1,0 +1,3 @@
+name: Claw 个人助手
+description: 个人助手预设：拥有持久个人主目录（~/.dsh/claw/claw-personal），可跨会话用 bash 保存私有资产。
+order: 30

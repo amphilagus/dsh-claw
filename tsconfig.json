@@ -1,0 +1,14 @@
+{
+  "extends": "../deepseek-harness/tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "paths": {
+      "@deepseek-ai/dsh-sandbox": ["../deepseek-harness/packages/sandbox/sandbox/src/index.ts"],
+      "@deepseek-ai/dsh-sandbox-local": ["../deepseek-harness/packages/sandbox/sandbox-local/src/index.ts"]
+    }
+  },
+  "include": [
+    "src",
+    "vitest.config.ts"
+  ]
+}
