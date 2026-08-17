@@ -1,5 +1,5 @@
 /**
- * The claw-home resolution service consumed by the sandbox provider.
+ * The claw-home resolution service consumed by the sandbox-policy grant.
  * @module @deepseek-ai/dsh-claw/home/service
  */
 

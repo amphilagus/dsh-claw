@@ -19,15 +19,7 @@ dc-harness/claw-home/
 
   > Your personal home directory is `$DSH_HOME/claw/<presetId>`. You may use bash commands to make any changes inside it and store your private assets there; it persists across your sessions.
 
-- Exposes `ctx.clawHome` (`homeForPreset` / `homeForSession`) for the sandbox provider.
-
-### `claw-home-sandbox` (function plugin, replaces `ctx.sandbox`)
-
-- Subclasses `LocalSandboxProvider`; for every confined execution by a tracked claw agent, injects the agent's home as an extra writable root before the `--` separator:
-  - bubblewrap: `--bind <home> <home>`
-  - Landlock launcher: `--rw <home>`
-  - seatbelt (macOS): `(allow file-write* (subpath "<home>"))` appended to the SBPL profile
-- Unknown dialects (e.g. Windows ACL) are left unchanged; non-claw and agentless calls are unchanged.
+- Exposes `ctx.clawHome` (`homeForPreset` / `homeForSession`) and registers `sandboxPolicy.grant({ name: 'claw-home' })` so the home is an extra writable root under `workspace-write`.
 
 ### `claw-memory` (function plugin, `memory_search`)
 
@@ -89,8 +81,8 @@ The symlinks under each package's `node_modules/@deepseek-ai/` point into the si
 
 ## Known Limitations and Deferred Work
 
-- **fs tools cannot write the home** — only bash/terminal executions gain the home writable root (the in-process fs fence still checks `writableRoots(policy)`, which v1 does not extend). Prompts steer agents to bash for home writes. A `writeRoots` field on `SandboxExecutionPolicy` would close this in a small core patch.
 - **No read isolation** — all confined executions still read everything (`readOnly: ['/']` / `--ro-bind / /`). Homes of other claw agents are readable but not writable.
 - **No per-session homes** — the home is per preset (`$DSH_HOME/claw/<presetId>`), so every session of the same claw preset shares one home (this is what makes it a persistent personal space across sessions).
 - **Memory is append-only per preset** — changing `embeddingModel` later makes old vectors incompatible; `memory_search` reports a dimension mismatch instead of silently mixing models.
-- **Windows** — the grant injection is dialect-detected; the Windows ACL runner has no `--` argv dialect, so no home grant is added there yet.
+- **Windows ACE is workspace-SID-scoped** — extra roots reuse the workspace write SID; sessions sharing a workspace share those standing ACEs.
+- **`read-only` does not open the home** — extra roots are stamped only under `workspace-write`.

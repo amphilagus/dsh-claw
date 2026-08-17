@@ -1,17 +1,15 @@
-# The dsh-claw bundle patch: disable the plain local sandbox provider and
-# insert home, the claw sandbox, and memory. sandbox-claw must follow
-# claw-home (`inject: ['clawHome']`). memory only needs agents/tools first.
+# The dsh-claw bundle patch: insert home, uv-sandbox, and memory. The system
+# sandbox-local provider stays; claw-home and uv-sandbox register extra writable
+# roots through sandboxPolicy.grant(). memory only needs agents/tools first.
 #
 # User overlays belong in the profile's own cordis.patch.yml, addressed by id:
 #   - id: claw-memory
 #     config:
 #       root: '~/.dsh/memories'
-- id: sandbox
-  disabled: true
 - insert:
     - id: claw-home
       name: '@deepseek-ai/dsh-claw/home'
-    - id: sandbox-claw
-      name: '@deepseek-ai/dsh-claw/sandbox'
+    - id: uv-sandbox
+      name: '@deepseek-ai/dsh-claw/uv'
     - id: claw-memory
       name: '@deepseek-ai/dsh-claw/memory'

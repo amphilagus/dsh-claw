@@ -5,8 +5,9 @@
 
 import type { Context } from '@deepseek-ai/cordis'
 // Side-effect type imports: pull the agent event declarations and the
-// systemPrompt service type into this program.
+// systemPrompt / sandboxPolicy service types into this program.
 import type {} from '@deepseek-ai/dsh-agent'
+import type {} from '@deepseek-ai/dsh-sandbox-policy'
 import type {} from '@deepseek-ai/dsh-system-prompt'
 import { clawHomeFor, defaultClawRoot, ensureClawHome, isClawPreset, presetFromSession } from './home.ts'
 import { CLAW_HOME_VARIABLE } from './prompt.ts'
@@ -20,8 +21,8 @@ export type { ClawHomeService } from './service.ts'
 
 /** Cordis function-plugin name. */
 export const name = 'claw-home'
-/** Services required before claw agents can receive homes. */
-export const inject = ['agents']
+/** Services required before claw agents can receive homes and extra write roots. */
+export const inject = ['agents', 'sandboxPolicy']
 
 export interface Config {
   /** Root directory holding one home per claw-* preset. Defaults to `$DSH_HOME/claw`. */
@@ -34,7 +35,7 @@ export interface Config {
  * Install claw-home for agents published after this plugin loads: create the
  * home directory when a claw preset is joined (at publication or on a later
  * blank-session switch), publish `{{claw_home}}` for the preset persona, and
- * expose resolution for the claw-home sandbox provider.
+ * register the home as a sandbox-policy extra writable root.
  * @param ctx - the host context.
  * @param config - optional root and prefix overrides.
  */
@@ -43,6 +44,13 @@ export function apply(ctx: Context, config: Config = {}): void {
   const prefix = config.prefix ?? 'claw'
   const service = new ClawHomeServiceImpl(ctx, root, prefix)
   ctx.provide('clawHome', service)
+  ctx.sandboxPolicy.grant({
+    name: 'claw-home',
+    roots: ({ session }) => {
+      const home = service.homeForSession(session?.id)
+      return home === undefined ? [] : [home]
+    },
+  })
 
   const adopt = (sessionId: string, preset: string | undefined): void => {
     service.track(sessionId, preset)

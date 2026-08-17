@@ -19,13 +19,13 @@
       "types": "./lib/home/invariant.d.mts",
       "default": "./lib/home/invariant.mjs"
     },
-    "./sandbox": {
-      "types": "./lib/sandbox/index.d.mts",
-      "default": "./lib/sandbox/index.mjs"
-    },
     "./memory": {
       "types": "./lib/memory/index.d.mts",
       "default": "./lib/memory/index.mjs"
+    },
+    "./uv": {
+      "types": "./lib/uv/index.d.mts",
+      "default": "./lib/uv/index.mjs"
     },
     "./cordis.patch.yml": "./cordis.patch.yml",
     "./src/*": "./src/*",
@@ -49,7 +49,7 @@
     "@deepseek-ai/dsh-invariants": "*",
     "@deepseek-ai/dsh-llm": "*",
     "@deepseek-ai/dsh-sandbox": "*",
-    "@deepseek-ai/dsh-sandbox-local": "*",
+    "@deepseek-ai/dsh-sandbox-policy": "*",
     "@deepseek-ai/dsh-session": "*",
     "@deepseek-ai/dsh-system-prompt": "*",
     "@deepseek-ai/dsh-tools": "*"

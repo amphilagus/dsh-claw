@@ -15,7 +15,7 @@ ln -sfn "$H/packages/util/home-paths" node_modules/@deepseek-ai/dsh-home-paths
 ln -sfn "$H/packages/runtime-diagnostics/invariants" node_modules/@deepseek-ai/dsh-invariants
 ln -sfn "$H/packages/llm/llm" node_modules/@deepseek-ai/dsh-llm
 ln -sfn "$H/packages/sandbox/sandbox" node_modules/@deepseek-ai/dsh-sandbox
-ln -sfn "$H/packages/sandbox/sandbox-local" node_modules/@deepseek-ai/dsh-sandbox-local
+ln -sfn "$H/packages/sandbox/sandbox-policy" node_modules/@deepseek-ai/dsh-sandbox-policy
 ln -sfn "$H/packages/core/session" node_modules/@deepseek-ai/dsh-session
 ln -sfn "$H/packages/core/system-prompt" node_modules/@deepseek-ai/dsh-system-prompt
 ln -sfn "$H/packages/core/tools" node_modules/@deepseek-ai/dsh-tools
